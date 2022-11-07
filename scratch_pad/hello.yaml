@@ -1,0 +1,6 @@
+#platform
+sensor:
+  -platform: mqtt
+    state_topic: "sensor/topic"
+  -platform : mqtt
+    state_topic: "sensor2/topic"
