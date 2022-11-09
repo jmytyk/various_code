@@ -1,0 +1,11 @@
+11/6/22
+home assistant troubleshooting, fully updated back online. 
+
+11/7/22
+home assistant troubleshooting, background work on the ESPhome plugin. Github cleanup. 
+
+11/8/22
+worked on getting an esp8266 communicating with the ESPhome plugin. 
+
+11/9/22
+--how to flash the onboard LED from the HA dashboard? 
