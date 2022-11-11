@@ -8,4 +8,8 @@ home assistant troubleshooting, background work on the ESPhome plugin. Github cl
 worked on getting an esp8266 communicating with the ESPhome plugin. 
 
 11/9/22
---how to flash the onboard LED from the HA dashboard? 
+JS in squish world, VM CI work
+
+11/11/22
+can flash an LED from switch in HA dashboard
+cleaned up all dashboards in HA
