@@ -13,3 +13,7 @@ JS in squish world, VM CI work
 11/11/22
 can flash an LED from switch in HA dashboard
 cleaned up all dashboards in HA
+
+11/14/22 
+checking, worked on HA background over last two days, 
+html / css / flare stuff for day job. 
