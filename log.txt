@@ -17,3 +17,8 @@ cleaned up all dashboards in HA
 11/14/22 
 checking, worked on HA background over last two days, 
 html / css / flare stuff for day job. 
+
+11/15
+lots of spread sheet stuff, nothing complicated. 
+debugging HA LED state mis-match --> trigger solid, just inverted. but it was not at stand-up of this firmware. 
+used OTA to redeploy, slick, fast. 
