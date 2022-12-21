@@ -1,0 +1,41 @@
+known working stuff
+
+open connection to micropython REPL via terraterm
+115200 - 
+maybe com 6?
+
+
+# list root directory
+print(os.listdir('/'))
+
+# print current directory
+print(os.getcwd())
+
+--- 
+
+
+http://docs.micropython.org/en/latest/esp8266/quickref.html
+
+import machine
+machine.freq() 
+
+pin 2 is on board LED
+ pin looks to be inverted - duty cycle of 1024 is off, 0 is on. 
+
+ 0-1023 is the range, it truncates the range if out of range. 
+
+--- all works
+from machine import Pin, PWM
+
+pwm0 = PWM(Pin(0))      # create PWM object from a pin
+pwm0.freq()             # get current frequency
+pwm0.freq(1000)         # set frequency
+pwm0.duty()             # get current duty cycle
+pwm0.duty(200)          # set duty cycle
+pwm0.deinit()           # turn off PWM on the pin
+
+pwm2 = PWM(Pin(2), freq=500, duty=512) # create and configure in one go
+
+--- the order of setting the freq and the duty matter -- set up the freq, then change up the duty cycle as needed. confirm on scope if this is the case -- ie, the duty doesn't change if the freq is changed afterwards. 
+
+overwriting pin 1 will block serial connection back to you... oops.. 
