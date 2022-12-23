@@ -1,13 +1,14 @@
 
 #try pin d5, d6, which is GPIO 12 and 14 (used in spi)
 
+#pwm2 --> pin2 is onboard LED
 
 #outline
 
 #import
 import machine
 from machine import PWM, Pin
-from time import sleep 
+from time import sleep
 
 led1 = Pin(0, Pin.OUT)
 led2 = Pin(2, Pin.OUT)
@@ -17,33 +18,40 @@ led2 = Pin(2, Pin.OUT)
 pwm1 = PWM(led1, freq=1000, duty=1023)
 pwm2 = PWM(led2, freq=1000, duty=1023)
 
-pwm1.duty(25)
-pwm2.duty(25)
-
-pwm1.duty(1023)
+#turn them off
+pwm1.duty(0)
 pwm2.duty(1023)
 
-for x in range(1023):
-	pwm1.duty(x)
-	pwm2.duty(x)
+#turn them on
+pwm1.duty(1023)
+pwm2.duty(0)
 
 
-'''
-while True:
-  tchannel.pulse_width(cur_width)
+#max min brightness
+maxBright = 100
+minBright = 10
 
-  sleep(0.01)
+#figure out the list of pulse widths, stepping though forward and rev. 
+fullRange = maxBright - minBright
+p_width_invert = range(maxBright + 1)[::-1]
+p_width = fullRange
 
-  cur_width += wstep
+#fade up, 2 is inverted
+for x in range(minBright, maxBright+1):
+    print(x)
+    pwm1.duty(x)
+    pwm2.duty(x)
+    sleep(0.01)
 
-  if cur_width > max_width:
-    cur_width = max_width
-    wstep *= -1
-  elif cur_width < min_width:
-    cur_width = min_width
-    wstep *= -1
 
-'''
+
+#trying to find and easy / blunt way off looping down from max to min. 
+#fade down, 2 is inverted. 
+for x in reversed(range(fullRange):
+    print(x)
+    pwm1.duty(x)
+    pwm2.duty(x)
+    sleep(0.01)
 
 
 

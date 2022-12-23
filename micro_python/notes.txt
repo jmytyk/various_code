@@ -39,3 +39,12 @@ pwm2 = PWM(Pin(2), freq=500, duty=512) # create and configure in one go
 --- the order of setting the freq and the duty matter -- set up the freq, then change up the duty cycle as needed. confirm on scope if this is the case -- ie, the duty doesn't change if the freq is changed afterwards. 
 
 overwriting pin 1 will block serial connection back to you... oops.. 
+
+
+#signal allows inversion.  pin 1 is hardware inverted, talking directly to pin 1, and watching the signal looks backwards, 
+map the object connected to pin 1 over to the signal object, all set the invert value to true. 
+when communicating to pin 1 via led2 (signal) - signal matches expection. 
+led2_pin = Pin(1, Pin.OUT)
+led2 = Signal(led2_pin, invert=True)
+
+not sure how to link signal and pwm
