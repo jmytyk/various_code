@@ -10,11 +10,22 @@ import machine
 from machine import PWM, Pin
 from time import sleep
 
+def convert(x, in_min, in_max, out_min, out_max):
+    return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+
+lut = [10, 15, 18, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
+
+#a way to scale all the values in the LUT
+min_brightness = 0
+max_brightness = 1024
+
+wait_at_top = 1000
+wait_at_bottom = 1000
+
 led1 = Pin(0, Pin.OUT)
 led2 = Pin(2, Pin.OUT)
 
 #pin setups
-
 pwm1 = PWM(led1, freq=1000, duty=1023)
 pwm2 = PWM(led2, freq=1000, duty=1023)
 
@@ -27,35 +38,41 @@ pwm1.duty(1023)
 pwm2.duty(0)
 
 
-#max min brightness
-maxBright = 100
-minBright = 10
-
-#figure out the list of pulse widths, stepping though forward and rev. 
-fullRange = maxBright - minBright
-p_width_invert = range(maxBright + 1)[::-1]
-p_width = fullRange
-
 #fade up, 2 is inverted
-for x in range(minBright, maxBright+1):
-    print(x)
-    pwm1.duty(x)
-    pwm2.duty(x)
+for value in lut:
+    print(value)
+    
+    #map lut into min to max
+    dcycle_value = convert(value, 0, 1024, min_brightness, max_brightness)
+    print(dcycle_value)
+
+    pwm1.duty(dcycle_value)
+    pwm2.duty(dcycle_value)
+
     sleep(0.01)
 
+#pausing for effect, printing something out to keep connection open
+for i in (wait_at_top):
+  sleep(0.01)
+  print("...")
 
 
 #trying to find and easy / blunt way off looping down from max to min. 
 #fade down, 2 is inverted. 
-for x in reversed(range(fullRange):
-    print(x)
-    pwm1.duty(x)
-    pwm2.duty(x)
+for value in reversed(lut):
+    print(value)
+
+    #map lut into min to max
+    dcycle_value = convert(value, 0, 1024, min_brightness, max_brightness)
+    print(dcycle_value)
+    
+    pwm1.duty(dcycle_value)
+    pwm2.duty(dcycle_value)
+
     sleep(0.01)
 
-
-
-
-#loop with delay time
-
+#pausing for effect, printing something out to keep connection open
+for i in (wait_at_bottom):
+  sleep(0.01)
+  print("...")
 
