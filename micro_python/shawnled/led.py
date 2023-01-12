@@ -49,7 +49,7 @@ def fillCIETable():
 
 
 def convert(x, in_min, in_max, out_min, out_max):
-    return (x - in_min) * (out_max - out_min) // (in_max - in_min) + out_min
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
 
 
 
@@ -62,15 +62,16 @@ def main():
         min_brightness = 0
         max_brightness = 1024
 
-        wait_at_top = 500
-        wait_at_bottom = 500
+        wait_at_top = 250
+        wait_at_bottom = 250
 
-        led1 = Pin(0, Pin.OUT)
+        #led1 = Pin(0, Pin.OUT)
+        led1 = Pin(12, Pin.OUT) #d6
         led2 = Pin(2, Pin.OUT)
 
         #pin setups
-        pwm1 = PWM(led1, freq=1000, duty=1023)
-        pwm2 = PWM(led2, freq=1000, duty=1023)
+        pwm1 = PWM(led1, freq=500, duty=1023)
+        pwm2 = PWM(led2, freq=500, duty=1023)
 
         #turn them off
         pwm1.duty(0)
@@ -91,13 +92,12 @@ def main():
             pwm2.duty(dcycle_value)
             sleep(0.01)
 
-            #pausing for effect, printing something out to keep connection open
+        
         for i in range(wait_at_top):
             sleep(0.01)
             print("top...")
-
-        #trying to find and easy / blunt way off looping down from max to min. 
-
+            
+            
         #fade down, 2 is inverted. 
         for value in reversed(lut):
 
