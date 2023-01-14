@@ -14,7 +14,7 @@ from machine import PWM, Pin, I2C
 from time import sleep
 import math
 import pca9685
-import pca9685_esp32
+
 
 #setup the i2c on GPIO 5,4, at 400k, 
 # physical board pin is D1,  SCL, conected to GPIO5
@@ -23,28 +23,47 @@ import pca9685_esp32
 #timeout of commumication, no connect on the board will cause watchdog to reboot the board.
 i2c = I2C(scl=Pin(5), sda=Pin(4), freq=400000, timeout=1000)
 
-#return stuff on the wire. 
+#return stuff on the wire, verified the request is being sent via scope
 i2c.scan()
+
+#return 64 most of the time, 64,112 sometime --> 64 is 0x40
 
 #put stuff on the wire. 
 #i2c.writeto(42, b'123')
 
 #setup the PCA using i2c
-#8266 lib, timeout errors?  (this delaraion auto-completed.)
+#addrerss 0x40 --> clearly documented.
 pca= pca9685.PCA9685(i2c,0x40)
-
-#32 lib, timeout errors?
-#pca1 = pca9685_esp32.pca9865(4,5)
 
 #hook up some hardware to see what's happening... 
 
+#changin pwm freq seems to do something. 62-2441 (this is visible on scope)
+pca.freq(1500) 
+pca.freq() #what did it get set to? the freq is based on scalers?
 
-pca.freq(4000) #set pwm overall freq
+
+#set 5 channels to full.
+pca.duty(0,2048) #index, duty cycle
+pca.duty(1,2048) #index, duty cycle
+pca.duty(2,2048) #index, duty cycle
+pca.duty(3,2048) #index, duty cycle
+pca.duty(4,2048) #index, duty cycle
+pca.duty(5,2048) #index, duty cycle
+pca.duty(6,2048) #index, duty cycle
+pca.duty(7,2048) #index, duty cycle
+pca.duty(8,2048) #index, duty cycle
+pca.duty(9,2048) #index, duty cycle
+pca.duty(10,2048) #index, duty cycle
+pca.duty(11,2048) #index, duty cycle
+pca.duty(12,2048) #index, duty cycle
+pca.duty(13,2048) #index, duty cycle
+pca.duty(14,2048) #index, duty cycle
+pca.duty(15,2048) #index, duty cycle
+pca.duty(16,2048) #index, duty cycle
 
 
-#set 5 channels to full. 
-pca.duty(0,4095) #index, duty cycle
-pca.duty(1,4095) #index, duty cycle
+
+
 pca.duty(2,4095) #index, duty cycle
 pca.duty(3,4095) #index, duty cycle
 pca.duty(4,4095) #index, duty cycle
