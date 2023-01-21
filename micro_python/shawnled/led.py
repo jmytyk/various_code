@@ -7,8 +7,6 @@ from machine import PWM, Pin
 from time import sleep
 import math
 
-#lut = [10, 15, 18, 50, 75, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000]
-
 def round_nearest_int(x):
     if x >= 0:
         return int(x + 0.5)

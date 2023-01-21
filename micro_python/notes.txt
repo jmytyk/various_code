@@ -190,13 +190,33 @@ wired in Arduino --> 5v pwm... super clean signal --> no change in output with C
 trying other driver. 
 no change... no output change on LED strip
 
+
+----fixed----
 and... Vf -- LEDs have a minimum voltage that they turn on, and for this array, that voltage, clearly written on the data sheet is 18v, using a bench power supply, it was 13.6 volts, still above the 12v that i was feeding it with the wall wart. 
 
 dimming works great, LED is hot!
 
-next up, how many drivers can we drive with 1 controller?
-what is the temperature of the LED after running for awhile?
+next up, how many drivers can we drive with 1 controller?  -> going i2c breakout route.
+-verifed driving 16 pwm channels via i2c break out works
+-pwm level is not 5v, but logic 3.3v
+-can level shift them up on output side. 
 
+see if putting level shifter on i2c results in level shift on outputs?  - this is the ideal use case.
+--> works! 
+
+
+--sourced 10 drivers, and matching LEDs and holders - powering with DC 600w AC/DC PSU. 
+--sourced level shifters as well, they are bi-directional, is that an issue? 
+
+code is moved and generally rewritten to use the pwm board. 
+
+test / map the LUT table formuala it may need to be modified from 0-255 to 0-4095 usage. 
+
+
+need to work on the physical side of mounting and wiring 10 drivers, signal wires, power and such... 
+
+
+what is the temperature of the LED after running for awhile?
 
 
 
