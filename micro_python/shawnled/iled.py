@@ -96,8 +96,10 @@ def i2cSetup():
     #return stuff on the wire, verified the request is being sent via scope
     #rpca pwm driver board returns 64, 112 sometime --> 64 is 0x40
     i2c.scan()
+    
+    return i2c
 
-def pcaSetup():
+def pcaSetup(i2c):
     #setup the PCA using i2c
     #addrerss 0x40 --> clearly documented.
     pca= pca9685.PCA9685(i2c,0x40)
@@ -108,6 +110,8 @@ def pcaSetup():
     
     #set 5 channels to full.
     #pca.duty(0,2048) #index, duty cycle
+    
+    return pca
 
 def valueUpdate(id, value):
     
@@ -119,8 +123,8 @@ def valueUpdate(id, value):
 
 def main():
     
-    i2cSetup()
-    pcaSetup()
+    i2c = i2cSetup()
+    pca = pcaSetup(i2c)
     
     #which fade curve to use?
     lut = fillCIETable()
