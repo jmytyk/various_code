@@ -1,30 +1,24 @@
 #working on how to load unload data
-
-import json
-import array
-import numpy
+import io
 
 
-#array('l',[1,2,3,4])
-#array.fromfile()
+datastr = "1, 2, 3, 5, 4, 78, 8"
 
-numList = [1, 2, 3, 4, 5]
-Array = numpy.array(numList)
+f = open('data.txt', 'w')
+f.write(datastr)
 
-# Displaying the array
-print('Array:\n', Array)
-file = open("file1.txt", "w+")
- 
-# Saving the array in a text file
-content = str(Array)
-file.write(content)
-file.close()
- 
-# Displaying the contents of the text file
-file = open("file1.txt", "r")
-content = file.read()
- 
-print("\nContent in file1.txt:\n", content)
-file.close()
+f.close()
+
+
+f = open('data.txt')
+fstring = f.read()
+f.close()
+
+data = fstring.split(',')
+
+print(data)
+
+print(data[1])
+
 
 
