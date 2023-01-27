@@ -49,24 +49,24 @@ def fillCIETable():
 
 #------------------------------------------------------------------------------------
 
-#populate a LUT with values found in a json file. use the juypter notebook to generate the curve and values.
+#populate a LUT with values found in a txt file. use the juypter notebook to generate the curve and values.
 
-#currently broken, memory problem, and string to int problem. 
+#currently broken, memory problem, and string to int problem, trying to parse text file.  blows up a string split with 8k elements in the text file
 
 
 def fillSplTable():
-    jin = []
-    try:
-        with open('spline_pwm_file.json', 'r') as j:
-            json_data = json.load(j)
+    f = open('spline_pwm_file.txt')
+    fstring = f.read()
+    f.close()
+
+    data = fstring.split(' ')
+
+    #print(data)
+    #print(int(data[1]))
     
-    except OSError:
-        print("spline_pwm_file.json isn't found")
-
-    jin = json_data.split(',')
-    print("length of loaded file ",  len(jin))
-
-    return jin
+    print("length of loaded file", len(data))
+    
+    return data
 
 #------------------------------------------------------------------------------------
 
