@@ -51,9 +51,6 @@ def fillCIETable():
 
 #populate a LUT with values found in a json file. use the juypter notebook to generate the curve and values.
 
-#currently broken, memory problem, and string to int problem. 
-
-
 def fillSplTable():
     jin = []
     try:
@@ -116,7 +113,7 @@ def pcaSetup(i2c):
     
     return pca
 
-def valueUpdate(pca, id, value):
+def valueUpdate(id, value):
     
     #update the duty on the output, id is passed in. 
     pca.duty(id,value) #index, duty cycle
@@ -150,16 +147,16 @@ def main():
 
             print(dcycle_value)
             
-            valueUpdate(pca, 0, dcycle_value)
-            valueUpdate(pca, 1, dcycle_value)
-            valueUpdate(pca, 2, dcycle_value)
-            valueUpdate(pca, 3, dcycle_value)
-            valueUpdate(pca, 4, dcycle_value)
-            valueUpdate(pca, 5, dcycle_value)
-            valueUpdate(pca, 6, dcycle_value)
-            valueUpdate(pca, 7, dcycle_value)
-            valueUpdate(pca, 8, dcycle_value)
-            valueUpdate(pca, 9, dcycle_value)
+            valueUpdate(0, dcycle_value)
+            valueUpdate(1, dcycle_value)
+            valueUpdate(2, dcycle_value)
+            valueUpdate(3, dcycle_value)
+            valueUpdate(4, dcycle_value)
+            valueUpdate(5, dcycle_value)
+            valueUpdate(6, dcycle_value)
+            valueUpdate(7, dcycle_value)
+            valueUpdate(8, dcycle_value)
+            valueUpdate(9, dcycle_value)
             
             sleep(0.01)
 
@@ -173,16 +170,16 @@ def main():
 
             print(dcycle_value)
             
-            valueUpdate(pca, 0, dcycle_value)
-            valueUpdate(pca, 1, dcycle_value)
-            valueUpdate(pca, 2, dcycle_value)
-            valueUpdate(pca, 3, dcycle_value)
-            valueUpdate(pca, 4, dcycle_value)
-            valueUpdate(pca, 5, dcycle_value)
-            valueUpdate(pca, 6, dcycle_value)
-            valueUpdate(pca, 7, dcycle_value)
-            valueUpdate(pca, 8, dcycle_value)
-            valueUpdate(pca, 9, dcycle_value)
+            valueUpdate(0, dcycle_value)
+            valueUpdate(1, dcycle_value)
+            valueUpdate(2, dcycle_value)
+            valueUpdate(3, dcycle_value)
+            valueUpdate(4, dcycle_value)
+            valueUpdate(5, dcycle_value)
+            valueUpdate(6, dcycle_value)
+            valueUpdate(7, dcycle_value)
+            valueUpdate(8, dcycle_value)
+            valueUpdate(9, dcycle_value)
             
             sleep(0.01)
 
