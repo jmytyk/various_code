@@ -22,3 +22,6 @@ html / css / flare stuff for day job.
 lots of spread sheet stuff, nothing complicated. 
 debugging HA LED state mis-match --> trigger solid, just inverted. but it was not at stand-up of this firmware. 
 used OTA to redeploy, slick, fast. 
+
+2/13
+moving repo
