@@ -1,0 +1,214 @@
+
+#fungal growth networks -
+import random
+
+class Node:
+    def __init__(self, position):
+        self.position = position
+        self.neighbors = []
+
+    def add_neighbor(self, neighbor):
+        self.neighbors.append(neighbor)
+
+
+def generate_fungal_network(num_nodes, max_distance):
+    nodes = []
+   
+    # Generate nodes
+    for _ in range(num_nodes):
+        x = random.uniform(-max_distance, max_distance)
+        y = random.uniform(-max_distance, max_distance)
+        z = random.uniform(-max_distance, max_distance)
+        node = Node((x, y, z))
+        nodes.append(node)
+   
+    # Connect nodes
+    for node in nodes:
+        for other_node in nodes:
+            if node != other_node:
+                distance = get_distance(node.position, other_node.position)
+                if distance <= max_distance:
+                    node.add_neighbor(other_node)
+   
+    return nodes
+
+
+def get_distance(pos1, pos2):
+    x1, y1, z1 = pos1
+    x2, y2, z2 = pos2
+    distance = ((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2) ** 0.5
+    return distance
+
+
+# Example usage
+num_nodes = 20
+max_distance = 10.0
+
+fungal_network = generate_fungal_network(num_nodes, max_distance)
+
+# Print the connections
+for node in fungal_network:
+    print("Node", node.position, "is connected to:")
+    for neighbor in node.neighbors:
+        print("   ", neighbor.position)
+
+'''
+This script defines a Node class that represents a node in the fungal network. Each node has a position and a list of neighboring nodes. The generate_fungal_network function creates a specified number of nodes with random positions within a given maximum distance. It then connects the nodes if their distance is within the maximum distance. Finally, it returns the list of nodes representing the fungal network.
+
+In the example usage, we generate a fungal network with 20 nodes and a maximum distance of 10 units. Then, we print the connections for each node.
+
+You can run this script in Grasshopper using the GHPython component or directly in Python. Adjust the num_nodes and max_distance variables to modify the size and density of the network.
+
+-------------------------------------------------------------------------------------
+
+fungal surface patterns
+
+'''
+
+import rhinoscriptsyntax as rs
+import random
+
+# Define the size of the grid
+grid_size = 100
+grid_step = 1.0
+
+# Define the diffusion rates
+a_diffusion_rate = 1.0
+b_diffusion_rate = 0.5
+
+# Define the feed and kill rates
+feed_rate = 0.055
+kill_rate = 0.062
+
+# Define the number of iterations
+num_iterations = 2000
+
+# Create initial concentrations
+a = [[1.0 for _ in range(grid_size)] for _ in range(grid_size)]
+b = [[0.0 for _ in range(grid_size)] for _ in range(grid_size)]
+
+# Add random perturbations
+for i in range(grid_size // 2 - 5, grid_size // 2 + 5):
+    for j in range(grid_size // 2 - 5, grid_size // 2 + 5):
+        a[i][j] = 0.5
+        b[i][j] = 0.25
+
+# Simulation
+for _ in range(num_iterations):
+    for i in range(grid_size):
+        for j in range(grid_size):
+            a_value = a[i][j]
+            b_value = b[i][j]
+
+            next_a = a_value + (
+                a_diffusion_rate * rs.Laplacian(i, j, grid_step, a)
+                - a_value * b_value * b_value
+                + feed_rate * (1.0 - a_value)
+            )
+
+            next_b = b_value + (
+                b_diffusion_rate * rs.Laplacian(i, j, grid_step, b)
+                + a_value * b_value * b_value
+                - (kill_rate + feed_rate) * b_value
+            )
+
+            a[i][j] = max(0, min(1, next_a))
+            b[i][j] = max(0, min(1, next_b))
+
+# Create the surface based on the concentrations
+surface = rs.AddNurbsSurface(
+    rs.PointGrid([[i * grid_step, j * grid_step, a[i][j] * 20] for i in range(grid_size) for j in range(grid_size)]),
+    grid_size - 1,
+    grid_size - 1
+)
+
+# Display the surface in Grasshopper
+a_output = rs.coercecurve(surface)
+
+# Output the surface to Grasshopper
+a_output
+
+'''
+
+To use this script in Grasshopper, follow these steps:
+
+Open Grasshopper and create a new Python component.
+Copy and paste the script into the Python component.
+Right-click on the Python component's output and select "Graph Mapper > Surface".
+Connect the output to a display component like a "Preview" or "Mesh" component.
+Adjust the parameters in the script such as grid size, diffusion rates, feed and kill rates, and the number of iterations as per your preference.
+Run the Grasshopper script to generate the fungal surface pattern.
+The script uses the rhinoscriptsyntax library (rs) to interact with Rhino and Grasshopper. It creates a grid of concentrations (a and b), applies random perturbations to the initial concentrations, and simulates the reaction-diffusion process for the specified number of iterations. Finally, it creates a surface based on the concentrations and outputs it to Grasshopper for visualization.
+
+
+--------------------------------------------------------
+write a phython GH program for grasshoppe that illustrates how cathedral termite mounds are built
+
+
+'''
+
+import rhinoscriptsyntax as rs
+import math
+import random
+
+def generate_termite_mound(num_layers, layer_height, mound_radius, layer_thickness):
+    layers = []
+    current_radius = 0.0
+    for _ in range(num_layers):
+        current_radius += random.uniform(layer_thickness * 0.8, layer_thickness * 1.2)
+        layers.append((current_radius, layer_height))
+   
+    # Generate layers
+    for i, layer in enumerate(layers):
+        radius, height = layer
+        cylinder = rs.AddCylinder(rs.WorldXYPlane(), radius, height)
+        rs.MoveObject(cylinder, (0, 0, height * i))
+        layers[i] = cylinder
+
+    # Create mound base
+    base_height = random.uniform(layer_height * 0.2, layer_height * 0.4)
+    base_radius = mound_radius + random.uniform(layer_thickness * 0.8, layer_thickness * 1.2)
+    base = rs.AddCylinder(rs.WorldXYPlane(), base_radius, base_height)
+
+    # Combine layers and base
+    mound = rs.BooleanUnion(layers)
+    mound = rs.BooleanUnion([mound, base])
+
+    return mound
+
+
+# Set mound parameters
+num_layers = 10
+layer_height = 3.0
+mound_radius = 10.0
+layer_thickness = 0.5
+
+# Generate termite mound
+termite_mound = generate_termite_mound(num_layers, layer_height, mound_radius, layer_thickness)
+
+# Display the termite mound in Grasshopper
+mound_output = rs.coercecurve(termite_mound)
+
+# Output the termite mound to Grasshopper
+mound_output
+
+
+'''
+To illustrate how cathedral termite mounds are built in Grasshopper using Python, we can use a procedural approach to generate a simplified representation of the mound structure. Here's an example Python script that you can use:
+
+python
+Copy code
+import rhinoscriptsyntax as rs import math import random def generate_termite_mound(num_layers, layer_height, mound_radius, layer_thickness): layers = [] current_radius = 0.0 for _ in range(num_layers): current_radius += random.uniform(layer_thickness * 0.8, layer_thickness * 1.2) layers.append((current_radius, layer_height)) # Generate layers for i, layer in enumerate(layers): radius, height = layer cylinder = rs.AddCylinder(rs.WorldXYPlane(), radius, height) rs.MoveObject(cylinder, (0, 0, height * i)) layers[i] = cylinder # Create mound base base_height = random.uniform(layer_height * 0.2, layer_height * 0.4) base_radius = mound_radius + random.uniform(layer_thickness * 0.8, layer_thickness * 1.2) base = rs.AddCylinder(rs.WorldXYPlane(), base_radius, base_height) # Combine layers and base mound = rs.BooleanUnion(layers) mound = rs.BooleanUnion([mound, base]) return mound # Set mound parameters num_layers = 10 layer_height = 3.0 mound_radius = 10.0 layer_thickness = 0.5 # Generate termite mound termite_mound = generate_termite_mound(num_layers, layer_height, mound_radius, layer_thickness) # Display the termite mound in Grasshopper mound_output = rs.coercecurve(termite_mound) # Output the termite mound to Grasshopper mound_output
+To use this script in Grasshopper, follow these steps:
+
+Open Grasshopper and create a new Python component.
+Copy and paste the script into the Python component.
+Right-click on the Python component's output and select "Graph Mapper > Surface".
+Connect the output to a display component like a "Preview" or "Mesh" component.
+Adjust the parameters in the script such as the number of layers, layer height, mound radius, and layer thickness as per your preference.
+Run the Grasshopper script to generate the termite mound structure.
+The script generates a termite mound by stacking cylindrical layers of varying radius and height. Each layer's radius is increased randomly to create the characteristic shape of a termite mound. The mound base is added as a larger cylinder to provide stability. Finally, the layers and base are combined using boolean operations to create the complete termite mound.
+
+Feel free to adjust the parameters and experiment with the mound's shape and size to create different variations of the termite mound structure.
+
+'''
