@@ -18,15 +18,18 @@ def run_touch_off():
             c.mode(linuxcnc.MODE_MDI)
         
         #send MDI command on button press
-        c.mdi('G4 P3')              #snooze 3, are you ready?
-        c.mdi('G10 L20 P0 Z0')      #set current z to z zero
-        c.mdi('G91')                #probe for initial contact
+        #macro updated for 0.760
+        c.mdi('G4 P3')            #snooze 3, are you ready?
+        c.mdi('G10 L20 P0 Z0')    #set current z to z zero
+        c.mdi('G91')              #probe for initial contact
         c.mdi('F10')                
-        c.mdi('G38.2 Z0.10')
-        c.mdi('G4 P0.25')           #snooze 0.25
-        c.mdi('G38.2 Z-0.20')       #move off then probe slow
-        c.mdi('G1 Z1 F10')          #move up to set new zero
-        c.mdi('G10 L20 P0 Z1.2505') #set Z0 at trigger point plus plate offset
+        c.mdi('G38.2 Z-0.50')
+        c.mdi('F10')                
+        c.mdi('G1 Z0.1')                
+        c.mdi('G1 P0.5')          #snooze 0.25
+        c.mdi('G38.2 Z-0.20')     #move off then probe slow
+        c.mdi('G1 Z0.5 F10')      #move up to set new zero
+        c.mdi('G10 L20 P0 Z1.26') #set Z0 at trigger point plus plate offset
 
 
 #------------------------------------------------------------------------------------------------------------------------
