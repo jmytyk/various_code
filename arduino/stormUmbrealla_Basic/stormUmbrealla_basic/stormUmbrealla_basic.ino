@@ -17,6 +17,8 @@ Adafruit_NeoPixel pixels(NUMPIXELS, PIN, NEO_RGB + NEO_KHZ800);
 #define DELAYVAL 50 // Time (in milliseconds) to pause between pixels
 
 //------------------------------------------------------------------------------------------------
+//this fucntion ie. chunk of code will set the whole string to off wait a little bit, set the string to all white, wait, then back off. 
+
 void allflash(){
   
   pixels.clear();
@@ -31,81 +33,11 @@ void allflash(){
   pixels.show();
   delay(100);
 
-  pixels.fill(pixels.Color(0, 255, 255),0);
-  pixels.show();
-  delay(100);
-
-  pixels.clear();
-  pixels.show();
-  delay(100);
-
-  pixels.fill(pixels.Color(0, 255, 255),0);
-  pixels.show();
-  delay(100);
-
-
-}
-
-
-
-//------------------------------------------------------------------------------------------------
-void mediumflash(){
-  
-  pixels.clear();
-  pixels.show();
-  delay(100);
-  
-  pixels.fill(pixels.Color(128, 255, 255),25, 50);
-  pixels.show();
-  delay(100);
-  
-  pixels.clear();
-  pixels.show();
-  delay(100);
-
-  pixels.fill(pixels.Color(0, 255, 255),0,10);
-  pixels.show();
-  delay(100);
-
-  pixels.clear();
-  pixels.show();
-  delay(100);
-
-  pixels.fill(pixels.Color(0, 255, 255),15,35);
-  pixels.show();
-  delay(100);
-
-
-}
-
-//------------------------------------------------------------------------------------------------
-void chase(){
-
-int d = 15;
-pixels.clear();
-pixels.show();
-
-  for (int i = 0; i < NUMPIXELS; i++) {
-    pixels.setPixelColor(i, pixels.Color(255, 255, 150));
-    pixels.show();
-    delay(d);  // Delay between LED movements
-  }
-
-  for (int i = NUMPIXELS - 1; i >= 0; i--) {
-    pixels.setPixelColor(i, pixels.Color(70, 204, 255));
-    
-    if (i+5>0){
-      pixels.setPixelColor(i-5, pixels.Color(255, 255, 0));
-      pixels.show();
-    }
-
-    pixels.show();
-    delay(d);  // Delay between LED movements
-  }
 }
 
 
 //------------------------------------------------------------------------------------------------
+//this function ie. chunk of code will have the pixles light up from one end to the other. it starts with all pixels off, ends with all on. 
 void grow(){
 
 pixels.clear();
@@ -123,43 +55,9 @@ pixels.show();
 
 }
 
-void sparkle(){
 
-pixels.clear();
-pixels.show();
-
-  for(int i=0; i<NUMPIXELS; i+=10) { // For each pixel in chunk...
-    pixels.setPixelColor(i, pixels.Color(128, 255, 255));
-  }
-
-  pixels.show();
-  delay(120);
-
-  for(int i=0; i<NUMPIXELS; i+=7) { // For each pixel in chunk...
-    pixels.setPixelColor(i, pixels.Color(150, 150, 233));
-  }
-
-  pixels.show();
-  delay(500);
-
-  for(int i=0; i<NUMPIXELS; i+=3) { // For each pixel in chunk...
-    pixels.setPixelColor(i, pixels.Color(238, 149, 145));
-  }
-  
-  pixels.show();
-  delay(800);
-
-  for(int i=0; i<NUMPIXELS; i+=1) { // For each pixel in chunk...
-    pixels.setPixelColor(i, pixels.Color(255, 149, 145));
-  }
-  
-  pixels.show();
-  delay(10);
-
-}
-
-//------------------------------------------------------------------------
-//simple fade up and down
+//------------------------------------------------------------------------------------------------
+//simple fade up and down, starts with all off, ends with all off
 void fade() {
   
   pixels.clear();
@@ -178,61 +76,83 @@ for(int i=255; i>0; i--) { // For each pixel in chunk...
     delay(10);
   }
 
-
 }
 
+
 //------------------------------------------------------------------------
+//Arduino required setup block of code.
+
 void setup() {
-  Serial.begin(115200);
-  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  Serial.begin(115200);         //be sure your serial monitor is set to 115200
+  pixels.begin();               //INITIALIZE NeoPixel strip object (REQUIRED)
   pixels.setBrightness(255);
 }
 
 //------------------------------------------------------------------------
+//Arduino required loop block of code.
+
 void loop() {
-  pixels.clear(); // Set all pixel colors to 'off'
+  pixels.clear();               // Set all pixel colors to 'off'
 
-  Serial.println("fade"); fade(); 
-  pixels.clear(); delay(2000);
-
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(500);
+  Serial.println("allflash");   //use the serial monitor to keep track of where we are in the loop
+  allflash();                   //triger the 'all flash' chunk of code. 
   
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(100);
-
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(500);
+  Serial.println("allflash");   //use the serial monitor to keep track of where we are in the loop
+  allflash();                   //triger the 'all flash' chunk of code. 
   
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(100);
+  Serial.println("allflash");   //use the serial monitor to keep track of where we are in the loop
+  allflash();                   //triger the 'all flash' chunk of code. 
+  
+  Serial.println("allflash");   //use the serial monitor to keep track of where we are in the loop
+  allflash();                   //triger the 'all flash' chunk of code. 
 
-  Serial.println("grow"); grow(); 
-  pixels.clear(); delay(2000);
+  pixels.clear();               //clear all the data awaiting to be sent to the string
+  pixels.show();                //send the data to the string
+  delay(100);                   //wait just a bit to let all the data proogate down the line. 
+  
+  delay(2000);                  //pause the whole sequence for 2 seconds
 
-  Serial.println("allflash"); allflash();
-  pixels.clear(); delay(750);
+  Serial.println("fade");       //use the serial monitor to keep track of where we are in the loop
+  fade();                       //triger the 'fade' chunk of code. 
+  
+  pixels.clear();               //clear all the data awaiting to be sent to the string
+  pixels.show();                //send the data to the string
+  delay(100);                   //wait just a bit to let all the data proogate down the line. 
     
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(2000);
-  
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(1000);
+  delay(2000);                  //pause the whole sequence for 2 seconds
 
-  Serial.println("chase"); chase();
-  Serial.println("chase"); chase();
-  pixels.clear(); delay(2000);
+  Serial.println("grow");       //use the serial monitor to keep track of where we are in the loop
+  grow();                       //triger the 'grow' chunk of code. 
   
-  Serial.println("mediumflash");  mediumflash();
-  pixels.clear(); delay(10);
-  
-  Serial.println("sparkle"); sparkle();
-  pixels.clear(); delay(2000);
+  pixels.clear(); 
+  pixels.show();                //send the data to the string
+  delay(100);                   //wait just a bit to let all the data proogate down the line. 
 
-  Serial.println("allflash"); allflash();
-  Serial.println("allflash"); allflash();
-  Serial.println("allflash"); allflash();
-  pixels.clear(); delay(2000);
+  delay(2000);                  //pause the whole sequence for 2 seconds
 
-  Serial.println("...");
+  Serial.println("...");        //use the serial monitor to keep track of where we are in the loop
+
+
+
+
+  //talk to pixel 1, set it to a color.
+
+  pixels.clear();  //be sure we have a empty data buffer. 
+  pixels.show();   //send the data to the string
+  delay(100);      //wait just a bit to let all the data proogate down the line. 
+
+
+
+  //note the '1' is which pixel
+  //the color is set "in-line" just after... pixels.Color(255,0,0)  -> Red is 255, Green is 0, Blue is 0  (R,G,B)
+  pixels.setPixelColor(1, pixels.Color(255, 0, 0));
+
+  pixels.show();   //Send the updated pixel colors to the hardware.
+  delay(100);      //wait just a bit to let all the data proogate down the line. 
+
+  Serial.println("...");        //use the serial monitor to keep track of where we are in the loop
+
+
+
+
 }
